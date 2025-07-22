@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Access Granted</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .typewriter h1 {
+      overflow: hidden;
+      border-right: .15em solid #00ffcc;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: .1em;
+      animation:
+        typing 3s steps(20, end),
+        blink-caret 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #00ffcc }
+    }
+  </style>
+
+  <script>
+    // Redirect to home.html after typing completes (~3.5s for buffer)
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 3500);
+  </script>
+</head>
+<body class="bg-black text-green-400 flex items-center justify-center min-h-screen">
+
+  <div class="typewriter text-center">
+    <h1 class="text-4xl md:text-6xl font-mono font-bold">Access Granted...</h1>
+  </div>
+
+</body>
+</html>

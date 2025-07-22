@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dart Registration System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Slide-in animation */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide {
+      animation: slideIn 1s ease-out forwards;
+    }
+
+    /* Glowing button style */
+    .neon-btn {
+      position: relative;
+      display: inline-block;
+      font-size: 2rem;
+      padding: 1.5rem 4rem;
+      color: #fff;
+      background: linear-gradient(90deg, #00f5a0, #00d9f5);
+      border: none;
+      border-radius: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow:
+        0 0 10px #00f5a0,
+        0 0 20px #00d9f5,
+        0 0 40px #00f5a0,
+        0 0 80px #00d9f5;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .neon-btn:hover {
+      transform: scale(1.1);
+      box-shadow:
+        0 0 20px #00f5a0,
+        0 0 40px #00d9f5,
+        0 0 80px #00f5a0,
+        0 0 120px #00d9f5;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gray-800 p-6 shadow-lg">
+    <h1 class="text-4xl md:text-5xl font-bold text-center text-cyan-400">Dart Registration System</h1>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex flex-col items-center justify-center p-8 text-center">
+    <div class="slide mb-12">
+      <h2 class="text-3xl md:text-5xl font-semibold text-cyan-300">Welcome to the System</h2>
+    </div>
+
+    <!-- Big Glowing Button -->
+    <a href="register.html" class="neon-btn">Start Registering</a>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 py-6 mt-16">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <p class="text-sm text-cyan-400">&copy; 2025 Dart Registration System. All rights reserved.</p>
+      <div class="mt-2 flex justify-center space-x-6 text-cyan-300">
+        <a href="#" class="hover:text-white transition">Privacy</a>
+        <a href="#" class="hover:text-white transition">Terms</a>
+        <a href="#" class="hover:text-white transition">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DART Registration Service</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #eef1f5;
+      color: #333;
+    }
+
+    header {
+      background: #343a40;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #folder-status {
+      margin-top: 10px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 550px;
+      margin-top: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 4px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    input:focus, select:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+
+    form button[type="submit"] {
+      width: 100%;
+      background-color: #007BFF;
+      font-size: 17px;
+      margin-top: 10px;
+    }
+
+    form button[type="submit"]:hover {
+      background-color: #0069d9;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-group > div {
+      flex: 1;
+    }
+
+    fieldset {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+
+    fieldset label {
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    footer {
+      background: #343a40;
+      color: #ccc;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 50px;
+      font-size: 14px;
+    }
+
+    /* Modal styles */
+    #custom-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #modal-backdrop {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+    }
+
+    #modal-box {
+      position: relative;
+      background: white;
+      border-radius: 10px;
+      padding: 25px 30px;
+      max-width: 400px;
+      width: 90%;
+      z-index: 10000;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    #modal-box p {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    #modal-box button {
+      padding: 10px 20px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      font-size: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #modal-box button:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      .form-group {
+        flex-direction: column;
+      }
+
+      .back-btn {
+        font-size: 20px;
+        left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back-btn" href="home.html">⬅</a>
+  <h1>DART Registration Service</h1>
+</header>
+
+<main>
+  <h2>📘 Student Registration</h2>
+  <button onclick="chooseFolder()">📂 Choose Save Folder</button>
+  <p id="folder-status">⚠️ No folder selected</p>
+
+  <form id="student-form">
+    <label>Name: <input type="text" id="name" required></label>
+
+    <div class="form-group">
+      <div>
+        <label>Age: <input type="number" id="age" required></label>
+      </div>
+      <div>
+        <label>Gender:
+          <select id="gender" required>
+            <option value="">--Select--</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div>
+        <label>Grade: <input type="text" id="grade" required></label>
+      </div>
+      <div>
+        <label>Section: <input type="text" id="section" required></label>
+      </div>
+    </div>
+
+    <label>Department: <input type="text" id="department" required></label>
+    <label>Address: <input type="text" id="address" required></label>
+
+    <div class="form-group">
+      <div>
+        <label>Phone: <input type="text" id="phone" required></label>
+      </div>
+      <div>
+        <label>Parent's Phone: <input type="text" id="parent-phone" required></label>
+      </div>
+    </div>
+
+    <fieldset>
+      <legend><strong>Status:</strong></legend>
+      <label><input type="checkbox" name="status" value="New Student"> New Student</label>
+      <label><input type="checkbox" name="status" value="Pass Student"> Pass Student</label>
+      <label><input type="checkbox" name="status" value="1 Year Dropout"> 1 Year Dropout</label>
+      <label><input type="checkbox" name="status" value="2 Year Dropout"> 2 Year Dropout</label>
+      <label><input type="checkbox" name="status" value="More than 2 Years"> More than 2 Years</label>
+    </fieldset>
+
+    <button type="submit">➕ Register Student</button>
+  </form>
+</main>
+
+<footer>
+  © 2025 DART Registration System. All rights reserved.
+</footer>
+
+<!-- Modal -->
+<div id="custom-modal">
+  <div id="modal-backdrop"></div>
+  <div id="modal-box">
+    <p id="modal-message"></p>
+    <button onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<script>
+  const TELEGRAM_BOT_TOKEN = '7616674385:AAH0jy603D5UMG7tnjqwxMyQV1IbCGRANms';
+  const TELEGRAM_CHAT_ID = '@njeveicenvecjf';
+
+  let folderHandle = null;
+
+  function showModal(message) {
+    document.getElementById('modal-message').innerText = message;
+    document.getElementById('custom-modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('custom-modal').style.display = 'none';
+  }
+
+  async function chooseFolder() {
+    try {
+      folderHandle = await window.showDirectoryPicker();
+      document.getElementById('folder-status').innerText = `✅ Folder selected: ${folderHandle.name}`;
+      document.getElementById('folder-status').style.color = "green";
+    } catch (err) {
+      showModal("❌ Folder access denied or canceled.");
+    }
+  }
+
+  async function getOrCreateFolder(parent, name) {
+    return await parent.getDirectoryHandle(name, { create: true });
+  }
+
+  async function sendToTelegram(message) {
+    try {
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message,
+          parse_mode: "HTML"
+        })
+      });
+    } catch (error) {
+      console.error("❌ Telegram error:", error);
+    }
+  }
+
+  document.getElementById('student-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (!folderHandle) {
+      showModal("⚠️ Please choose a folder first.");
+      return;
+    }
+
+    const student = {
+      Name: document.getElementById('name').value.trim(),
+      Age: document.getElementById('age').value.trim(),
+      Sex: document.getElementById('gender').value,
+      "Phone Number": document.getElementById('phone').value.trim(),
+      "Parent Phone Number": document.getElementById('parent-phone').value.trim(),
+      Department: document.getElementById('department').value.trim(),
+      Address: document.getElementById('address').value.trim(),
+      "Registration Date": new Date().toLocaleDateString(),
+    };
+
+    const grade = document.getElementById('grade').value.trim();
+    const section = document.getElementById('section').value.trim();
+    const fileName = `${grade}${section}.xlsx`;
+
+    const gradeFolder = await getOrCreateFolder(folderHandle, `Grade_${grade}`);
+    const sectionFolder = await getOrCreateFolder(gradeFolder, `Section_${section}`);
+
+    let students = [];
+    try {
+      const fileHandle = await sectionFolder.getFileHandle(fileName);
+      const file = await fileHandle.getFile();
+      const buffer = await file.arrayBuffer();
+      const workbook = XLSX.read(buffer, { type: "array" });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      students = XLSX.utils.sheet_to_json(sheet);
+    } catch (err) {}
+
+    students.forEach(s => delete s.No);
+    students.push(student);
+    students.sort((a, b) => a.Name.localeCompare(b.Name));
+
+    const finalData = students.map((s, index) => ({
+      No: index + 1,
+      Name: s.Name,
+      Sex: s.Sex,
+      Age: s.Age,
+      "Phone Number": s["Phone Number"],
+      "Parent Phone Number": s["Parent Phone Number"],
+      Department: s.Department,
+      Address: s.Address,
+      "Registration Date": s["Registration Date"]
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(finalData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, `${grade}${section}`);
+    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+
+    const fileHandle = await sectionFolder.getFileHandle(fileName, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(wbout);
+    await writable.close();
+
+    const selectedStatuses = Array.from(document.querySelectorAll('input[name="status"]:checked'))
+                                  .map(cb => cb.value);
+
+    if (selectedStatuses.length > 0) {
+      const reportsFolder = await getOrCreateFolder(folderHandle, "Reports");
+      const reportFileName = "status_report.xlsx";
+
+      let reportData = [];
+      try {
+        const reportHandle = await reportsFolder.getFileHandle(reportFileName);
+        const reportFile = await reportHandle.getFile();
+        const reportBuffer = await reportFile.arrayBuffer();
+        const reportBook = XLSX.read(reportBuffer, { type: "array" });
+        const reportSheet = reportBook.Sheets[reportBook.SheetNames[0]];
+        reportData = XLSX.utils.sheet_to_json(reportSheet);
+      } catch (err) {}
+
+      selectedStatuses.forEach(status => {
+        reportData.push({
+          Name: student.Name,
+          Sex: student.Sex,
+          Age: student.Age,
+          Status: status
+        });
+
+        const telegramMessage = `<b>📋 New Student Registered</b>\nName: ${student.Name}\nAge: ${student.Age}\nSex: ${student.Sex}\nStatus: ${status}`;
+        sendToTelegram(telegramMessage);
+      });
+
+      reportData.sort((a, b) => a.Name.localeCompare(b.Name));
+      const finalReport = reportData.map((r, i) => ({
+        No: i + 1,
+        Name: r.Name,
+        Sex: r.Sex,
+        Age: r.Age,
+        Status: r.Status
+      }));
+
+      const reportSheet = XLSX.utils.json_to_sheet(finalReport);
+      const reportBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(reportBook, reportSheet, "Status Report");
+      const reportOut = XLSX.write(reportBook, { bookType: "xlsx", type: "array" });
+
+      const reportHandle = await reportsFolder.getFileHandle(reportFileName, { create: true });
+      const reportWritable = await reportHandle.createWritable();
+      await reportWritable.write(reportOut);
+      await reportWritable.close();
+    }
+
+    showModal(`✅ Student ${student.Name} saved successfully.`);
+    document.getElementById('student-form').reset();
+  });
+</script>
+
+</body>
+</html>

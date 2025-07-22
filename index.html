@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome - RF Student Registration</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      color: white;
+    }
+
+    .typing {
+      font-size: 2rem;
+      border-right: 2px solid rgba(255, 255, 255, 0.75);
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 4s steps(40, end) forwards, blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1.5s ease-in forwards;
+      animation-delay: 4s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="typing">Welcome to DART Student Registration Service</h1>
+    <p class="fade-in">Redirecting to sign in page...</p>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const isReturned = localStorage.getItem("isReturned");
+      if (isReturned === "true") {
+        window.location.href = "Checking.html";
+      } else {
+        window.location.href = "signin.html";
+      }
+    }, 6000); // Wait for animation to complete before redirect
+  </script>
+</body>
+</html>
